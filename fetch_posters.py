@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-fetch_posters.py – Morgans' Movies
+fetch_posters.py – My Movies
 Fetches missing metadata from TMDB for any film in movies.json
 that is missing a posterUrl, plot, imdbRating, runtime, or genres.
 

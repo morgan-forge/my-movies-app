@@ -2,7 +2,7 @@
 # Serve My Movies over local network (Mac + iPhone on same Wi‑Fi).
 set -e
 cd "$(dirname "$0")"
-PORT="${MORGAN_PORT:-8000}"
+PORT="${MY_MOVIES_PORT:-8000}"
 
 IP=$(ipconfig getifaddr en0 2>/dev/null) || \
   IP=$(ifconfig | awk '/inet .* broadcast/ { print $2; exit }')

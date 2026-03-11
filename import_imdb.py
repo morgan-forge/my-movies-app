@@ -5,7 +5,7 @@ Primary match: IMDb ID (Const in CSV = imdbId in collection), normalised (strip 
 Fallback: normalised title + year, for films where the collection has a different/wrong imdbId.
 Writes yourRating (1-10) and dateRated (YYYY-MM-DD). Only processes Title Type = Movie.
 
-Usage (from morgans-movies folder):
+Usage (from the project folder):
   python3 import_imdb.py [path/to/ratings.csv]
   If no path given, uses the first .csv in the folder.
 """
