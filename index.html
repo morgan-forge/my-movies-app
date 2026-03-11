@@ -26,8 +26,12 @@
 				<h1>My Movies</h1>
 				<div id="providerStats" class="provider-stats"></div>
 			</div>
-			<div id="filmCount" class="film-count"></div>
+			<div class="header-actions">
+				<div id="filmCount" class="film-count"></div>
+			</div>
 		</header>
+
+		<div id="statusStrip" class="status-strip" role="status" aria-live="polite"></div>
 
 		<div class="controls">
 			<div class="search-container">
@@ -46,6 +50,7 @@
 					<span id="filterLabel">Filter</span>
 					<span id="filterArrow" class="filter-arrow">▾</span>
 				</button>
+				<button type="button" id="btnLoadDifferent" class="update-data-btn">UPDATE</button>
 				<span id="filterCount" class="filter-count">showing all</span>
 			</div>
 		</div>

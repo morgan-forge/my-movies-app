@@ -150,6 +150,50 @@ h1 {
 	font-size: 16px;
 }
 
+.header-actions {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 4px;
+}
+.update-data-btn {
+	background: none;
+	border: none;
+	color: var(--text-dim);
+	font-size: 11px;
+	font-weight: bold;
+	text-transform: uppercase;
+	padding: 9px 10px;
+	border-radius: 8px;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+	white-space: nowrap;
+	transition: background 0.15s, color 0.15s;
+}
+.update-data-btn:hover,
+.update-data-btn:active {
+	color: var(--text);
+	background: rgba(255, 255, 255, 0.06);
+}
+
+.status-strip {
+	max-height: 0;
+	overflow: hidden;
+	opacity: 0;
+	font-size: 12px;
+	color: var(--text-dim);
+	padding: 0 20px;
+	margin: 0 -20px 0 -20px;
+	background: rgba(59, 130, 246, 0.12);
+	transition: max-height 0.25s ease, opacity 0.25s ease, padding 0.2s ease, margin 0.2s ease;
+}
+.status-strip.visible {
+	max-height: 60px;
+	opacity: 1;
+	padding: 8px 20px;
+	margin-bottom: 6px;
+}
+
 /* ── Controls ── */
 .controls {
 	display: flex;

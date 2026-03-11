@@ -14,6 +14,9 @@
 	var activeFilters = { format: new Set(), decade: new Set(), genre: new Set() };
 	var filterOpen = false;
 
+	var STORAGE_KEY_MOVIES = 'my-movies-app.movies';
+	var statusStripHideTimer = null;
+
 	var BRAND_SVGS = {
 		apple: '<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="vertical-align:middle;display:inline-block" aria-label="Apple TV"><path d="M20.57 17.735h-1.815l-3.34-9.203h1.633l2.02 5.987c.075.231.273.9.586 2.012l.297-.997.33-1.006 2.094-6.004H24zm-5.344-.066a5.76 5.76 0 0 1-1.55.207c-1.23 0-1.84-.693-1.84-2.087V9.646h-1.063V8.532h1.121V7.081l1.476-.602v2.062h1.707v1.113H13.38v5.805c0 .446.074.75.214.932.14.182.396.264.75.264.207 0 .495-.041.883-.115zm-7.29-5.343c.017 1.764 1.55 2.358 1.567 2.366-.017.042-.248.842-.808 1.658-.487.71-.99 1.418-1.79 1.435-.783.016-1.03-.462-1.93-.462-.89 0-1.17.445-1.913.478-.758.025-1.344-.775-1.838-1.484-.998-1.451-1.765-4.098-.734-5.88.51-.89 1.426-1.451 2.416-1.46.75-.016 1.468.512 1.93.512.461 0 1.327-.627 2.234-.536.38.016 1.452.157 2.136 1.154-.058.033-1.278.743-1.27 2.219M6.468 7.988c.404-.495.685-1.18.61-1.864-.585.025-1.294.388-1.723.883-.38.437-.71 1.138-.619 1.806.652.05 1.328-.338 1.732-.825Z"/></svg>',
 		sky: '<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="vertical-align:middle;display:inline-block" aria-label="Sky"><path d="M7.387 13.656c0 1.423-.933 2.454-2.823 2.675-1.35.147-3.337-.025-4.294-.148-.025-.147-.074-.343-.074-.49 0-1.252.663-1.522 1.3-1.522.664 0 1.694.123 2.455.123.834 0 1.104-.295 1.104-.565 0-.368-.343-.515-1.006-.638l-1.767-.343C.785 12.453 0 11.423 0 10.343c0-1.325.933-2.454 2.798-2.65 1.398-.148 3.116.024 4.049.122.024.172.049.32.049.491 0 1.252-.663 1.522-1.276 1.522-.491 0-1.227-.099-2.086-.099-.884 0-1.227.246-1.227.54 0 .32.343.442.883.54l1.718.32c1.742.294 2.479 1.3 2.479 2.527m3.092 1.521c0 .761-.295 1.203-1.792 1.203-.196 0-.368-.025-.54-.05V6.22c0-.76.27-1.57 1.767-1.57.196 0 .393.024.565.049zm6.085 3.927c.197.098.59.22 1.105.245.859.025 1.325-.319 1.693-1.08L24 7.913a2.5 2.5 0 0 0-.957-.22c-.589 0-1.399.122-1.914 1.325l-1.497 3.534-2.945-4.81c-.196-.05-.662-.148-1.006-.148-1.03 0-1.62.393-2.233 1.031l-2.871 3.141 2.306 3.632c.418.663.982 1.006 1.89 1.006.589 0 1.104-.147 1.325-.245l-2.773-4.196 1.963-2.086 3.24 5.08Z"/></svg>'
@@ -431,6 +434,20 @@
 		wireChipRow('chipsDecade', 'decade');
 		wireChipRow('chipsGenre',  'genre');
 
+		var btnLoadDifferent = get('btnLoadDifferent');
+		if (btnLoadDifferent) {
+			btnLoadDifferent.addEventListener('click', function () {
+				if (statusStripHideTimer) {
+					clearTimeout(statusStripHideTimer);
+					statusStripHideTimer = null;
+				}
+				hideStatusStrip();
+				localStorage.removeItem(STORAGE_KEY_MOVIES);
+				var fileInput = get('moviesFileInput');
+				if (fileInput) fileInput.click();
+			});
+		}
+
 		updateProviderStats();
 		render();
 	}
@@ -458,6 +475,24 @@
 		if (landing) landing.classList.add('hidden');
 		if (appContent) appContent.classList.remove('hidden');
 	}
+
+	function showStatusStrip(msg) {
+		var strip = get('statusStrip');
+		if (!strip) return;
+		if (statusStripHideTimer) {
+			clearTimeout(statusStripHideTimer);
+			statusStripHideTimer = null;
+		}
+		strip.textContent = msg;
+		strip.classList.add('visible');
+	}
+
+	function hideStatusStrip() {
+		var strip = get('statusStrip');
+		if (strip) strip.classList.remove('visible');
+		statusStripHideTimer = null;
+	}
+
 
 	function parseMoviesPayload(parsed) {
 		if (Array.isArray(parsed)) return parsed;
@@ -536,21 +571,35 @@
 		reader.readAsText(file);
 	}
 
-	function wireFilePicker() {
-		var btn = get('btnLoadMovies');
+	function wireFileInputChange() {
 		var fileInput = get('moviesFileInput');
-		if (!btn || !fileInput) return;
-		btn.addEventListener('click', function () { fileInput.click(); });
+		if (!fileInput) return;
 		fileInput.addEventListener('change', function () {
 			var file = fileInput.files && fileInput.files[0];
 			if (!file) return;
 			var btn = get('btnLoadMovies');
-			if (btn) { btn.textContent = 'Loading…'; btn.disabled = true; }
+			if (btn) { btn.disabled = true; }
+			showMainUI();
+			showStatusStrip('Loading your collection…');
 			loadMoviesFile(file, function (normalised) {
 				try {
-					showMainUI();
 					runWithData(normalised);
+					try {
+						localStorage.setItem(STORAGE_KEY_MOVIES, JSON.stringify(normalised));
+					} catch (e) {
+						if (e.name === 'QuotaExceededError') {
+							console.warn('Storage full; collection not saved.');
+						}
+					}
+					showStatusStrip('Loaded ' + normalised.length + ' films');
+					if (statusStripHideTimer) clearTimeout(statusStripHideTimer);
+					statusStripHideTimer = setTimeout(function () {
+						hideStatusStrip();
+						statusStripHideTimer = null;
+					}, 2000);
 				} catch (err) {
+					hideStatusStrip();
+					showLanding();
 					alert('Error loading movies: ' + (err && err.message ? err.message : String(err)));
 					console.error('runWithData error', err);
 					return;
@@ -558,6 +607,8 @@
 				fileInput.value = '';
 				if (btn) { btn.textContent = 'Load movies JSON'; btn.disabled = false; }
 			}, function (msg) {
+				hideStatusStrip();
+				showLanding();
 				if (btn) { btn.textContent = 'Load movies JSON'; btn.disabled = false; }
 				alert(msg);
 				fileInput.value = '';
@@ -565,11 +616,43 @@
 		});
 	}
 
+	function wireFilePicker() {
+		var btn = get('btnLoadMovies');
+		var fileInput = get('moviesFileInput');
+		if (!btn || !fileInput) return;
+		btn.addEventListener('click', function () { fileInput.click(); });
+	}
+
 	function start() {
+		wireFileInputChange();
 		if (window.MOVIE_DATA && Array.isArray(window.MOVIE_DATA)) {
 			showMainUI();
 			runWithData(window.MOVIE_DATA);
 			return;
+		}
+		var saved = localStorage.getItem(STORAGE_KEY_MOVIES);
+		if (saved && saved.trim()) {
+			try {
+				var parsed = JSON.parse(saved);
+				var arr = parseMoviesPayload(parsed);
+				if (arr && arr.length > 0) {
+					var normalised = normaliseMoviesArray(arr);
+					if (normalised.length > 0) {
+						showMainUI();
+						runWithData(normalised);
+						showStatusStrip('Loaded ' + normalised.length + ' films');
+						if (statusStripHideTimer) clearTimeout(statusStripHideTimer);
+						statusStripHideTimer = setTimeout(function () {
+							hideStatusStrip();
+							statusStripHideTimer = null;
+						}, 2000);
+						return;
+					}
+				}
+				localStorage.removeItem(STORAGE_KEY_MOVIES);
+			} catch (e) {
+				localStorage.removeItem(STORAGE_KEY_MOVIES);
+			}
 		}
 		showLanding();
 		wireFilePicker();
