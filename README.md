@@ -19,6 +19,8 @@ The app has **no movie data on the server**. Open the site, then use **Load movi
 | **styles.css** | All visual styling. |
 | **app.js** | Loads data via file picker or `window.MOVIE_DATA` (standalone build); filter, sort, render. |
 
+The product roadmap is held offline (not in this repo).
+
 ## Run locally
 
 From this folder:
