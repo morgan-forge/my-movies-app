@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+	<meta name="theme-color" content="#0f172a">
+	<title>My Movies</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+	<div id="landing" class="landing">
+		<div class="landing-inner">
+			<h1>My Movies</h1>
+			<p>Load your movies collection to get started.</p>
+			<p class="landing-hint">Upload <strong>movies.json</strong> — a JSON file that is a single array of film objects (each with <code>title</code>, <code>year</code>, <code>provider</code>, <code>imdbId</code>). Use the <code>movies.json</code> from this project, or export in the same format.</p>
+			<button id="btnLoadMovies" class="landing-btn" type="button">Load movies JSON</button>
+			<input id="moviesFileInput" type="file" accept=".json,application/json,text/plain" hidden>
+		</div>
+	</div>
+	<div id="appContent" class="app-content hidden">
+	<div class="sticky-top">
+		<header>
+			<div>
+				<h1>My Movies</h1>
+				<div id="providerStats" class="provider-stats"></div>
+			</div>
+			<div id="filmCount" class="film-count"></div>
+		</header>
+
+		<div class="controls">
+			<div class="search-container">
+				<input type="text" id="searchInput" placeholder="Search film title..." autocomplete="off">
+				<button id="clearSearch" class="clear-btn" type="button">✕</button>
+			</div>
+			<div class="sort-row">
+				<button class="sort-btn active" id="sortNew" type="button">📅 Date</button>
+				<button class="sort-btn" id="sortAlpha" type="button">🔤 A–Z</button>
+				<button class="sort-btn" id="sortMine" type="button">⭐ Rated</button>
+				<button class="sort-btn" id="sortImdb" type="button">★ IMDb</button>
+				<button class="sort-btn" id="sortRuntime" type="button">⏱ Time</button>
+			</div>
+			<div class="filter-row">
+				<button class="filter-toggle" id="filterToggle" type="button">
+					<span id="filterLabel">Filter</span>
+					<span id="filterArrow" class="filter-arrow">▾</span>
+				</button>
+				<span id="filterCount" class="filter-count">showing all</span>
+			</div>
+		</div>
+
+		<!-- Collapsible filter panel -->
+		<div id="filterPanel" class="filter-panel">
+			<div class="filter-section">
+				<div class="filter-section-label">FORMAT</div>
+				<div class="chip-row" id="chipsFormat"></div>
+			</div>
+			<div class="filter-section">
+				<div class="filter-section-label">DECADE</div>
+				<div class="chip-row" id="chipsDecade"></div>
+			</div>
+			<div class="filter-section">
+				<div class="filter-section-label">GENRE</div>
+				<div class="chip-row" id="chipsGenre"></div>
+			</div>
+			<div class="filter-done-row">
+				<button id="filterClearAll" class="filter-clear-btn" type="button">Clear all</button>
+				<button id="filterDone" class="filter-done-btn" type="button">Done ✓</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="list" id="mediaList"><p style="color:var(--text-dim);padding:20px;">Loading…</p></div>
+
+	<div class="warning-banner" id="warningBanner">
+		<div style="font-weight:900; font-size:18px;">⚠️ DO NOT REBUY!</div>
+		<div id="warningDetail" style="font-size:13px; opacity:0.9;"></div>
+	</div>
+	</div>
+
+	<script src="app.js"></script>
+</body>
+
+</html>

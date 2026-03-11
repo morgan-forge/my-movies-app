@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Schema for My Movies collection (movies.json). Each entry is one film.",
+  "type": "object",
+  "required": ["title", "year", "provider"],
+  "additionalProperties": false,
+  "properties": {
+    "title": { "type": "string" },
+    "year": { "type": "integer" },
+    "provider": {
+      "type": "string",
+      "enum": ["apple", "prime", "sky", "blinkbox", "bluray", "dvd"]
+    },
+    "imdbId": { "type": "string" },
+    "status": { "type": "string", "enum": ["defunct"] },
+    "posterUrl": { "type": "string" },
+    "plot": { "type": "string" },
+    "imdbRating": { "type": "number" },
+    "runtime": { "type": "integer" },
+    "genres": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "yourRating": { "type": "integer", "minimum": 1, "maximum": 10 },
+    "dateRated": { "type": "string" }
+  }
+}

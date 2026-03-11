@@ -1,0 +1,558 @@
+/* My Movies – UI styles */
+
+:root {
+	--bg: #0f172a;
+	--card: #1e293b;
+	--accent: #3b82f6;
+	--text: #f8fafc;
+	--text-dim: #94a3b8;
+	--warning: #ef4444;
+	--imdb: #f5c518;
+	--prime-bg: #1a242e;
+	--prime-blue: #00a8e1;
+	--apple-bg: #ffffff;
+	--apple-text: #000000;
+	--sky-bg: #00a0e3;
+	--sky-text: #ffffff;
+	--defunct: #475569;
+	--bluray-bg: #1e3a5f;
+	--bluray-text: #93c5fd;
+	--dvd-bg: #2d2d2d;
+	--dvd-text: #a0aec0;
+}
+
+html {
+	background-color: var(--bg);
+	min-height: 100%;
+	-webkit-text-size-adjust: 100%;
+}
+
+* {
+	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
+}
+
+body {
+	background-color: var(--bg);
+	color: var(--text);
+	font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+	margin: 0;
+	min-height: 100vh;
+	min-height: -webkit-fill-available;
+}
+
+.hidden {
+	display: none !important;
+}
+
+/* ── Landing (no data loaded) ── */
+.landing {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	min-height: -webkit-fill-available;
+	padding: 20px;
+}
+.landing-inner {
+	text-align: center;
+	max-width: 320px;
+}
+.landing-inner h1 {
+	margin-bottom: 12px;
+}
+.landing-inner p {
+	color: var(--text-dim);
+	margin: 0 0 20px 0;
+	font-size: 15px;
+}
+.landing-hint {
+	font-size: 13px;
+	margin-bottom: 16px !important;
+	line-height: 1.45;
+}
+.landing-hint code {
+	background: rgba(255,255,255,0.1);
+	padding: 1px 5px;
+	border-radius: 4px;
+	font-size: 12px;
+}
+.landing-btn {
+	background-color: var(--accent);
+	color: var(--text);
+	border: none;
+	padding: 12px 24px;
+	font-size: 16px;
+	font-weight: 600;
+	border-radius: 8px;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}
+.landing-btn:hover,
+.landing-btn:active {
+	opacity: 0.9;
+}
+.app-content {
+	display: block;
+}
+
+/* ── Sticky top bar ── */
+.sticky-top {
+	position: sticky;
+	top: 0;
+	z-index: 50;
+	background-color: var(--bg);
+	padding: 0 20px;
+	padding-top: calc(env(safe-area-inset-top) + 10px);
+	border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-bottom: 10px;
+}
+header > div:first-child {
+	flex: 1;
+	min-width: 0;
+}
+
+h1 {
+	font-weight: 900;
+	font-size: 22px;
+	margin: 0 0 2px 0;
+	color: var(--accent);
+}
+
+.provider-stats {
+	font-size: 9px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	color: var(--text-dim);
+	line-height: 1.6;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.film-count {
+	font-size: 11px;
+	font-weight: 700;
+	color: var(--text-dim);
+	text-align: right;
+	white-space: nowrap;
+	padding-top: 3px;
+}
+
+.film-count span {
+	color: var(--accent);
+	font-size: 16px;
+}
+
+/* ── Controls ── */
+.controls {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-bottom: 6px;
+}
+
+.search-container {
+	position: relative;
+	width: 100%;
+}
+
+input {
+	width: 100%;
+	background: var(--card);
+	border: 2px solid transparent;
+	border-radius: 14px;
+	padding: 13px 45px 13px 16px;
+	color: white;
+	font-size: 17px;
+	outline: none;
+	transition: border-color 0.2s;
+}
+
+input:focus {
+	border-color: var(--accent);
+}
+
+.clear-btn {
+	position: absolute;
+	right: 12px;
+	top: 50%;
+	transform: translateY(-50%);
+	background: rgba(255, 255, 255, 0.1);
+	border: none;
+	color: white;
+	width: 26px;
+	height: 26px;
+	border-radius: 50%;
+	font-weight: bold;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	font-size: 14px;
+}
+
+/* ── Sort row ── */
+.sort-row {
+	display: flex;
+	gap: 6px;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: none;
+}
+
+.sort-row::-webkit-scrollbar { display: none; }
+
+.sort-btn {
+	flex: 1;
+	min-width: 64px;
+	border: 1px solid rgba(255,255,255,0.12);
+	background: var(--card);
+	color: var(--text-dim);
+	padding: 9px;
+	font-weight: bold;
+	border-radius: 12px;
+	font-size: 11px;
+	text-transform: uppercase;
+	transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.sort-btn.active {
+	background: var(--accent);
+	color: white;
+	border-color: var(--accent);
+}
+
+/* ── Filter row (same height as sort row) ── */
+.filter-row {
+	display: flex;
+	align-items: center;
+	background: var(--card);
+	border-radius: 12px;
+	padding: 4px 4px 4px 4px;
+	gap: 8px;
+}
+
+.filter-toggle {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	border: none;
+	background: none;
+	color: var(--text-dim);
+	padding: 9px 14px;
+	font-weight: bold;
+	border-radius: 8px;
+	font-size: 11px;
+	text-transform: uppercase;
+	white-space: nowrap;
+	transition: background 0.15s, color 0.15s;
+}
+
+.filter-toggle.active {
+	background: var(--accent);
+	color: white;
+}
+
+.filter-toggle.has-filters {
+	color: var(--accent);
+}
+
+.filter-toggle.has-filters.active {
+	color: white;
+}
+
+.filter-arrow {
+	font-size: 10px;
+	transition: transform 0.2s;
+}
+
+.filter-toggle.active .filter-arrow {
+	transform: rotate(180deg);
+}
+
+.filter-count {
+	flex: 1;
+	font-size: 10px;
+	color: var(--text-dim);
+	text-align: right;
+	padding-right: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.3px;
+}
+
+/* ── Filter panel ── */
+.filter-panel {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.filter-panel.open {
+	max-height: 400px;
+	padding-bottom: 8px;
+}
+
+.filter-section {
+	margin-top: 10px;
+}
+
+.filter-section-label {
+	font-size: 9px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	color: var(--text-dim);
+	margin-bottom: 5px;
+}
+
+.chip-row {
+	display: flex;
+	gap: 6px;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: none;
+	padding-bottom: 2px;
+}
+
+.chip-row::-webkit-scrollbar { display: none; }
+
+.chip {
+	flex-shrink: 0;
+	border: 1px solid rgba(255,255,255,0.15);
+	background: transparent;
+	color: var(--text-dim);
+	border-radius: 20px;
+	padding: 5px 12px;
+	font-size: 11px;
+	font-weight: 600;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.chip.active {
+	background: var(--accent);
+	color: white;
+	border-color: var(--accent);
+}
+
+.filter-done-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 12px;
+}
+
+.filter-clear-btn {
+	border: none;
+	background: none;
+	color: var(--text-dim);
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	padding: 6px 0;
+}
+
+.filter-done-btn {
+	border: none;
+	background: var(--accent);
+	color: white;
+	border-radius: 10px;
+	padding: 8px 18px;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+/* ── Film list ── */
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 12px 20px 150px 20px;
+}
+
+/* ── Card ── */
+.item {
+	background: rgba(30, 41, 59, 0.4);
+	border: 1px solid rgba(255, 255, 255, 0.05);
+	border-radius: 20px;
+	overflow: hidden;
+	cursor: pointer;
+	transition: border-color 0.15s;
+}
+
+.item:active {
+	border-color: var(--accent);
+}
+
+.item.defunct {
+	opacity: 0.6;
+	border-style: dashed;
+}
+
+.item-main {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 16px;
+}
+
+.item-poster {
+	width: 52px;
+	height: 78px;
+	border-radius: 8px;
+	object-fit: cover;
+	flex-shrink: 0;
+	margin-right: 12px;
+	background: var(--card);
+}
+
+.item-info {
+	flex: 1;
+	min-width: 0;
+}
+
+.item-title {
+	font-weight: 700;
+	font-size: 15px;
+	margin-bottom: 2px;
+	line-height: 1.25;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.item-year {
+	font-size: 10px;
+	color: var(--accent);
+	font-weight: 700;
+	text-transform: uppercase;
+	margin-bottom: 3px;
+}
+
+.item-meta {
+	font-size: 10px;
+	color: var(--text-dim);
+}
+
+.item-imdb-inline {
+	font-size: 10px;
+	color: var(--imdb);
+	font-weight: 700;
+	margin-left: 6px;
+}
+
+.item-your-rating {
+	font-size: 10px;
+	color: var(--imdb);
+	font-weight: 700;
+	margin-left: 6px;
+}
+
+.badge-stack {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	align-items: stretch;
+	width: 80px;
+	flex-shrink: 0;
+}
+
+/* ── Expanded detail panel ── */
+.item-detail {
+	display: none;
+	padding: 0 16px 16px 16px;
+	border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.item.expanded .item-detail {
+	display: block;
+}
+
+.item-plot {
+	font-size: 12px;
+	color: var(--text-dim);
+	line-height: 1.5;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.item-genres {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+	margin-bottom: 10px;
+}
+
+.genre-tag {
+	background: rgba(59, 130, 246, 0.15);
+	border: 1px solid rgba(59, 130, 246, 0.3);
+	color: var(--accent);
+	border-radius: 20px;
+	padding: 2px 8px;
+	font-size: 10px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.item-stats {
+	display: flex;
+	gap: 12px;
+	font-size: 11px;
+	color: var(--text-dim);
+	margin-bottom: 10px;
+}
+
+.item-stats .imdb-score,
+.item-stats .your-rating {
+	color: var(--imdb);
+	font-weight: 700;
+}
+
+/* ── Buttons ── */
+.btn-link {
+	text-decoration: none;
+	font-weight: 800;
+	font-size: 9px;
+	padding: 6px 8px;
+	border-radius: 8px;
+	text-align: center;
+	width: 100%;
+	text-transform: uppercase;
+}
+
+.btn-imdb  { background: var(--imdb); color: #000; }
+.btn-prime { background: var(--prime-bg); color: var(--prime-blue); border: 1px solid var(--prime-blue); }
+.btn-apple { background: var(--apple-bg); color: var(--apple-text); }
+.btn-sky   { background: var(--sky-bg); color: var(--sky-text); }
+.btn-defunct { background: var(--defunct); color: #fff; cursor: not-allowed; }
+.btn-bluray  { background: var(--bluray-bg); color: var(--bluray-text); border: 1px solid var(--bluray-text); cursor: default; }
+.btn-dvd     { background: var(--dvd-bg); color: var(--dvd-text); border: 1px solid var(--dvd-text); cursor: default; }
+
+/* ── Warning banner ── */
+.warning-banner {
+	position: fixed;
+	bottom: 40px;
+	left: 20px;
+	right: 20px;
+	background: var(--warning);
+	padding: 20px;
+	border-radius: 24px;
+	display: none;
+	box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+	animation: bounce 0.4s infinite alternate;
+	z-index: 100;
+}
+
+@keyframes bounce {
+	from { transform: translateY(0); }
+	to   { transform: translateY(-8px); }
+}
